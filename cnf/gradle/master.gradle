@@ -1,0 +1,88 @@
+/*
+ * Master Gradle build script
+ *
+ * Called by build.gradle in the root of the workspace to configure the project set.
+ *
+ * Depends on bndURI and bndWorkspace properties set by settings.gradle.
+ */
+
+defaultTasks 'clean', 'build'
+ 
+/* Add bnd as a script dependency */
+buildscript {
+    repositories {
+        ivy {
+            url "https://bitbucket.org/amdatu/amdatu-gradle-plugins/raw/master/dist/"
+        }
+		jcenter()
+    }
+  dependencies {
+    classpath 'org.amdatu:amdatu-gradle-plugins:1.0.6', files(bndURI, 'cnf/gradle/dependencies/org.osgi.impl.bundle.repoindex.cli.jar'), 
+		'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+  }
+}
+
+/* Load the BndPlugin class */
+apply from: rootProject.file('cnf/gradle/BndPlugin.gradle')
+
+allprojects {
+    apply plugin: org.amdatu.gradle.plugins.baseline.AmdatuBaselinePlugin
+	
+	apply plugin: nl.javadude.gradle.plugins.license.LicensePlugin
+	
+	apply plugin: 'java'
+	
+	/* Configure the license plugin options */
+	license {
+		header rootProject.file('etc/classheader_plain.txt')
+		excludes(["**/*.txt", "**/*.html", "packageinfo"])
+		skipExistingHeaders false
+	}
+}
+apply plugin: org.amdatu.gradle.plugins.release.AmdatuReleasePlugin
+
+// Configure the release options; only when needed
+amdatuRelease {
+    baseName = "amdatu-remote"
+//    repoDir = "../myrepo"
+//    exclude = "*.itest, *.demo"
+}
+
+/* Configure the subprojects */
+subprojects {
+  def bndProject = bndWorkspace.getProject(name)
+  if (bndProject != null && bndProject.isValid()) {
+	  plugins.apply BndPlugin
+  } else {
+	  /* Prevent Gradle Java plugin from creating jar files for each directory.
+	   * Bnd handles this for all bnd projects, we don't need jars for the other directories (cnf/etc..)
+	   */
+	  jar {
+		  deleteAllActions()
+	  }
+  }
+  
+  compileJava {
+	  options.encoding = 'utf-8'
+		options.fork = true
+		doFirst {
+			options.forkOptions.with {
+				executable = 'java'
+				jvmArgs = [ '-cp', new File(ecj).absolutePath, 'org.eclipse.jdt.internal.compiler.batch.Main' ]
+			}
+			options.define compilerArgs: [
+				'-encoding', 'utf-8',
+				'-g',
+				'-preserveAllLocals',
+				'-source', '1.8',
+				'-target', '1.8'
+			]
+		}
+	}
+ 
+}
+
+// Delete build dir output created by Gradle Java plugin after build task has finished.
+gradle.buildFinished{
+	delete 'build'
+}

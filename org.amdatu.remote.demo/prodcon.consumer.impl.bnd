@@ -1,0 +1,5 @@
+Bundle-Activator: org.amdatu.remote.prodcon.consumer.impl.Activator
+Bundle-Name: Amdatu Remote - ProdCon Demo consumer impl
+Bundle-Version: 0.1.0
+
+Private-Package: org.amdatu.remote.prodcon.consumer.impl

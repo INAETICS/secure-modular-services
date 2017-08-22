@@ -1,0 +1,15 @@
+Bundle-Activator: org.amdatu.remote.discovery.extender.Activator
+Bundle-Name: Amdatu Remote - Discovery (Extender)
+Bundle-Version: 0.1.3
+
+Private-Package: \
+  org.amdatu.remote,\
+  org.amdatu.remote.discovery,\
+  org.amdatu.remote.discovery.extender,\
+  org.apache.commons.lang3.*
+
+Provide-Capability: osgi.extender; \
+  osgi.extender=osgi.remoteserviceadmin; version:Version="1.1"; \
+  uses:="org.osgi.service.remoteserviceadmin", \
+  osgi.remoteserviceadmin.discovery; \
+  protocols:List<String>="local"; version:Version="1.1"

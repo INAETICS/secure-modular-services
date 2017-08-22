@@ -1,0 +1,4 @@
+Bundle-Name: Amdatu Remote - ProdCon Demo producer api
+Bundle-Version: 0.1.0
+
+Export-Package: org.amdatu.remote.prodcon.producer

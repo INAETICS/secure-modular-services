@@ -1,0 +1,17 @@
+# Note: global build/runpath bundles and version ranges are managed in cnf/ext/libraries
+#
+-buildpath: \
+	${osgi-buildpath},\
+	${dm-buildpath},\
+	${servlet-buildpath},\
+	${jackson-buildpath},\
+	${slf4j-buildpath},\
+	${junit-buildpath},\
+	${lang3-buildpath},\
+	${etcd4j-buildpath},\
+	${slp-buildpath},\
+	${jmdns-buildpath},\
+	${zk-buildpath},\
+	${avro-buildpath},\
+	lib/kpabe-full.jar;version=file
+-sub: *.bnd

@@ -1,0 +1,12 @@
+Bundle-Activator: org.amdatu.remote.discovery.configured.Activator
+Bundle-Name: Amdatu Remote - Discovery (Configured)
+Bundle-Version: 0.1.3
+
+Private-Package: \
+  org.amdatu.remote,\
+  org.amdatu.remote.discovery,\
+  org.amdatu.remote.discovery.configured,\
+  org.apache.commons.lang3.*
+
+Provide-Capability: osgi.remoteserviceadmin.discovery; \
+  protocols:List<String>="configured"; version:Version="1.1"

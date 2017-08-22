@@ -1,0 +1,22 @@
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+
+-runproperties: \
+  org.osgi.framework.bootdelegation=javax.*,\
+  org.amdatu.remote.discovery.configured.endpoints='http://localhost:8889/org.apache.celix.discovery.configured,http://localhost:9999/org.amdatu.remote.discovery.configured',\
+  org.osgi.service.http.port=9998
+
+-runbundles:  \
+  ${osgi-enterprise-runpath},\
+  ${httpservice-runpath},\
+  ${logservice-runpath},\
+  ${configadmin-runpath},\
+  ${dm-runpath},\
+  ${gogo-runpath},\
+  org.amdatu.remote.discovery.configured;version=latest,\
+  org.amdatu.remote.admin.http;version=latest,\
+  org.amdatu.remote.topology.promiscuous;version=latest,\
+  org.amdatu.remote.demo.calculator.demo.api;version=latest,\
+  org.amdatu.remote.demo.calculator.demo.server;version=latest

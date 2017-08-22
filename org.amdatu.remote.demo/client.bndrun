@@ -1,0 +1,25 @@
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+-runstorage: generated/client
+
+-runproperties: \
+  org.osgi.service.http.port=8888,\
+  org.osgi.framework.bootdelegation=javax.*,\
+  host=localhost,\
+  discovery.tcpip=localhost
+
+-runbundles: \
+  ${osgi-enterprise-runpath},\
+  ${httpservice-runpath},\
+  ${logservice-runpath},\
+  ${configadmin-runpath},\
+  ${dm-runpath},\
+  ${gogo-runpath},\
+  org.amdatu.remote.discovery.bonjour;version=latest,\
+  org.amdatu.remote.admin.http;version=latest,\
+  org.amdatu.remote.topology.promiscuous;version=latest,\
+  org.amdatu.remote.demo.topology.manager.remotetest;version=latest,\
+  org.amdatu.remote.demo.topology.manager.test.api;version=latest
+	

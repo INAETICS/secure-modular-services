@@ -1,0 +1,26 @@
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+-runsystemcapabilities: ${native_capability}
+-runsystempackages: sun.misc
+-runstorage: generated/runwithetcd2
+
+-runproperties: \
+  org.osgi.service.http.port=8082,\
+  amdatu.remote.logging.level=5,\
+  amdatu.remote.console.level=5,\
+  org.amdatu.remote.discovery.etcd.connecturl=http://127.0.0.1:4001,\
+  org.amdatu.remote.discovery.etcd.rootpath=/discovery2
+  
+-runbundles:  \
+  ${dm-runpath},\
+  ${osgi-cmpn-runpath},\
+  ${httpservice-runpath},\
+  ${configadmin-runpath},\
+  ${eventadmin-runpath},\
+  ${logservice-runpath},\
+  ${gogo-runpath},\
+  org.amdatu.remote.admin.http;version=latest,\
+  org.amdatu.remote.topology.promiscuous;version=latest,\
+  org.amdatu.remote.discovery.etcd;version=latest

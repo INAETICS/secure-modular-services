@@ -1,0 +1,136 @@
+# This is the Amdatu Remote itest project
+#
+# The basic idea is that this project is launched as a standard BND integration test projects. The tests run
+# in the 'parent framework, but subsequently spawn one or more 'child' frameworks that get provisioned as
+# needed (see RemoteServiceTestBase).
+#
+# Every test method runs in a clean child framework. Where possible combining multiple logical tests in a single
+# test method reduces overhead. In addition tests should to care should be taken not to polute that parent
+# framework (eg. by installing additional bundles or leaving servcies registered).
+#
+Bundle-Name: Amdatu Remote Integration tests
+Bundle-Version: 0.1.0
+Test-Cases: ${classes;CONCRETE;EXTENDS;junit.framework.TestCase}
+
+# This bundles must either embed or import any packages the itest framework code uses as well as the packages the
+# discovery implementation tests requires.
+#
+# remoteserviceadmin packages:
+#   org.osgi.service.remoteserviceadmin.*		: the R6 packages exposed to the tests
+#
+# itest framework packages:
+#   org.amdatu.remote.itest.* 					: this project's own packages
+#   org.apache.felix.framework.*,\        		: so we can launch (felix) frameworks
+#
+Private-Package: \
+  org.osgi.service.remoteserviceadmin.*;version=1.1.0;-split-package:=first,\
+  org.amdatu.remote.admin.itest.api,\
+  org.amdatu.remote.itest.*,\
+  org.amdatu.remote,\
+  org.amdatu.remote.discovery,\
+  org.apache.commons.*,\
+  org.apache.felix.framework.*
+
+Import-Package: !org.apache.log4j.*,\
+  !org.slf4j.*,\
+  !sun.misc.*,\
+  *
+
+# The felix framework looks for a default framework properties file containing all defaults.
+#
+Include-Resource: @${framework}!/default.properties
+
+# This bundle's classloader is the framework classloader for child frameworks. Therefore it must be able to dynamically
+# load any framework packages those child frameworks expose.
+#
+DynamicImport-Package: *
+
+# This project's buildpath must contain any packages the itest framework code uses as well as the packages the
+# discovery implementation tests requires.
+#
+# Note: global build/runpath bundles and version ranges are managed in cnf/ext/libraries
+# Note: increased PermGen can be removed once we move to 1.8
+#
+-buildpath: \
+  ${osgi-buildpath},\
+  ${dm-buildpath},\
+  ${lang3-buildpath},\
+  ${zk-buildpath},\
+  ${junit-buildpath},\
+  ${framework-buildpath},\
+  org.amdatu.remote;version=project,\
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+-runpath: ${junit-runpath}
+-runsystempackages: \
+   sun.misc,\
+   sun.reflect
+
+# This project's runbundles must contain the bundles the itest bundles itself requires to resolve and operate. It must
+# not contain the bundles under test as these are provisioned into child frameworks by the tests.
+#
+-runbundles: \
+  ${osgi-cmpn-runpath},\
+  ${servlet-runpath},\
+  ${dm-runpath},\
+  ${zk-runpath},\
+  ${slf4j-runpath},\
+  ${configadmin-runpath}
+
+# The runproperties specify the bundlepaths of bundles to be povisioned into test frameworks and the
+# extra system package for the test frameworks.
+#
+# Because the tests run in the parent framework all packages that brdige between parent and child
+# framework must be expose from the parent classloader into the child framworks.
+#
+# NOTE: Felix configadmin implements R5 api and thus does not resolve against cmpn 4.3.1
+# NOTE: If we embed BND we can resolve the bundle paths at runtime
+#
+-runproperties:	\
+  amdatu.remote.logging.level=4,\
+  amdatu.remote.console.level=0,\
+  felix.log.level=2,\
+  felix.cm.loglevel=1,\
+  itest.bundles.default="\
+    ${repo;org.apache.felix.eventadmin;latest}",\
+  itest.bundles.admin.http="\
+    ${repo;org.amdatu.remote.admin.http;latest},\
+    ${repo;org.apache.felix.http.api;[2.3.0,3)},\
+    ${repo;org.apache.felix.http.jetty;[2.3.0,3)}",\
+  itest.bundles.admin.http.avro="\
+    ${repo;org.amdatu.remote.admin.http.avro;latest},\
+    ${repo;org.apache.felix.http.api;[2.3.0,3)},\
+    ${repo;org.apache.felix.http.jetty;[2.3.0,3)}",\
+  itest.bundles.topology.promiscuous="\
+    ${repo;org.amdatu.remote.topology.promiscuous;latest}",\
+  itest.bundles.discovery.extender="\
+    ${repo;org.amdatu.remote.discovery.extender;latest}",\
+  itest.bundles.discovery.bonjour="\
+    ${repo;org.amdatu.remote.discovery.bonjour;latest}",\
+  itest.bundles.discovery.configured="\
+    ${repo;org.amdatu.remote.discovery.configured;latest}",\
+  itest.bundles.discovery.zookeeper="\
+    ${repo;org.amdatu.remote.discovery.zookeeper;latest}",\
+  itest.bundles.discovery.etcd="\
+    ${repo;org.amdatu.remote.discovery.etcd;latest}",\
+  itest.bundles.discovery.slp="\
+    ${repo;org.amdatu.remote.discovery.slp;latest}",\
+  itest.systempackages="\
+    sun.misc,\
+    sun.reflect,\
+    javax.servlet;version=2.6,\
+    javax.servlet.http;version=2.6,\
+    javax.servlet;version=3.0,\
+    javax.servlet.annotation;version=3.0,\
+    javax.servlet.descriptor;version=3.0,\
+    javax.servlet.http;version=3.0,\
+    org.amdatu.remote.admin.itest.api,\
+    org.osgi.service.cm;version=1.5,\
+    org.osgi.service.event;version=1.3,\
+    org.osgi.service.http;version=1.2.1,\
+    org.osgi.service.log;version=1.3,\
+    org.osgi.service.metatype;version=1.2,\
+    org.osgi.service.remoteserviceadmin;version=1.1.0,\
+    org.apache.felix.dm;version=4.3.0"

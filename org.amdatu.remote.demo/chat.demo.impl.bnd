@@ -1,0 +1,5 @@
+Bundle-Activator: org.amdatu.remote.demo.chat.impl.Activator
+Bundle-Name: Amdatu Remote - Chat Demo impl
+Bundle-Version: 0.1.0
+
+Private-Package: org.amdatu.remote.demo.chat.impl

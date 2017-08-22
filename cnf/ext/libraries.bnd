@@ -1,0 +1,176 @@
+
+# OSGi bundles
+#
+# On a combined buildpath the R6 remoteserviceadmin must be before the R5 enterprise so it overrides it on
+# the classpath.
+#
+framework: ${repo;org.apache.felix.framework;[4.2.1,5);HIGHEST}
+framework-buildpath: ${framework};version=file
+framework-runpath: ${framework};version=file
+
+osgi-core: ${repo;osgi.core;[5,6);HIGHEST}
+osgi-core-buildpath: ${osgi-core};version=file
+osgi-core-runpath: ${osgi-core};version=file
+osgi-cmpn: ${repo;osgi.cmpn;[5,6);HIGHEST}
+osgi-cmpn-buildpath: ${osgi-cmpn};version=file
+osgi-cmpn-runpath: ${osgi-cmpn};version=file
+osgi-enterprise: ${repo;osgi.enterprise;[5,6);HIGHEST}
+osgi-enterprise-buildpath: ${osgi-enterprise};version=file
+osgi-enterprise-runpath: ${osgi-enterprise};version=file
+osgi-rsa: ${repo;org.osgi.service.remoteserviceadmin;[1.1.0,1.2);HIGHEST}
+osgi-rsa-buildpath: ${osgi-rsa};version=file
+osgi-rsa-runpath: ${osgi-rsa};version=file
+
+osgi-buildpath: ${osgi-core-buildpath},\
+  ${osgi-rsa-buildpath},\
+  ${osgi-enterprise-buildpath},\
+  ${osgi-cmpn-buildpath}
+
+osgi-runpath: ${osgi-rsa-buildpath},\
+  ${osgi-enterprise-buildpath},\
+  ${osgi-cmpn-buildpath}
+
+# Http Service
+#
+# Felix servlet-api provides us with a Servlet 3.0 bundles that also exports itself as Servlet 2.6. This allows
+# Bundles requiring [2.3,3) to operate normally because 3.0 is beckward compatible.
+#
+servlet: ${repo;org.apache.felix.http.servlet-api;[1.0.0, 1.1);HIGHEST}
+servlet-buildpath: ${servlet};version=file
+servlet-runpath: ${servlet};version=file
+
+httpservice: ${repo;org.apache.felix.http.jetty;[2.2.2,2.3);HIGHEST}
+httpservice-buildpath: ${httpservice};version=file,\
+  ${servlet-buildpath}
+httpservice-runpath: ${httpservice};version=file,\
+  ${servlet-buildpath}
+
+# Config Admin
+#
+configadmin: ${repo;org.apache.felix.configadmin;[1.6.0,1.7);HIGHEST}
+configadmin-buildpath: ${configadmin};version=file
+configadmin-runpath: ${configadmin};version=file
+
+# Event Admin
+#
+eventadmin: ${repo;org.apache.felix.eventadmin;[1,2);HIGHEST}
+eventadmin-buildpath: ${eventadmin};version=file
+eventadmin-runpath: ${eventadmin};version=file
+
+# Log Service
+#
+logservice: ${repo;org.apache.felix.log;[1.0.1,1.1);HIGHEST}
+logservice-buildpath: ${logservice};version=file
+logservice-runpath: ${logservice};version=file
+
+# Dependency Manager
+#
+dm: ${repo;org.apache.felix.dependencymanager;[4.3,4.4);HIGHEST}
+dm-buildpath: ${dm};version=file
+dm-runpath: ${dm};version=file
+
+dm-shell: ${repo;org.apache.felix.dependencymanager.shell;[4.0.2,5);HIGHEST}
+dm-shell-runpath: ${dm};version=file,\
+  ${dm-shell};version=file
+
+# Commons lang3
+#
+lang3=${repo;org.apache.commons.lang3;[3.1.0,3.2.0);HIGHEST}
+lang3-buildpath: ${lang3};version=file
+lang3-runpath: ${lang3};version=file
+
+# ETCD4J
+#
+mousio-etcd4j=${workspace}/cnf/lib/mousio/etcd4j-2.7.0.jar
+compress-lzf=${workspace}/cnf/lib/com.ning.compress/compress-lzf-1.0.3.jar
+jcraft-jzlib=${workspace}/cnf/lib/com.jcraft.jzlib/jzlib-1.1.3.jar
+netty-buffer=${workspace}/cnf/lib/io.netty/netty-buffer-4.1.0.Beta6.jar
+netty-codec=${workspace}/cnf/lib/io.netty/netty-codec-4.1.0.Beta6.jar
+netty-codec-http=${workspace}/cnf/lib/io.netty/netty-codec-http-4.1.0.Beta6.jar
+netty-common=${workspace}/cnf/lib/io.netty/netty-common-4.1.0.Beta6.jar
+netty-handler=${workspace}/cnf/lib/io.netty/netty-handler-4.1.0.Beta6.jar
+netty-transport=${workspace}/cnf/lib/io.netty/netty-transport-4.1.0.Beta6.jar
+netty-resolver=${workspace}/cnf/lib/io.netty/netty-resolver-4.1.0.Beta6.jar
+lzma=${workspace}/cnf/lib/com.github.jponge/lzma-java-1.3.jar
+etcd4j-buildpath: ${mousio-etcd4j};version=file,\
+  ${compress-lzf};version=file,\
+  ${netty-buffer};version=file,\
+  ${netty-codec};version=file,\
+  ${netty-codec-http};version=file,\
+  ${netty-common};version=file,\
+  ${netty-handler};version=file,\
+  ${netty-transport};version=file,\
+  ${netty-resolver};version=file,\
+  ${lzma};version=file,\
+  ${jackson-core};version=file
+etcd4j-runpath:
+
+# Gogo Shell
+#
+gogo-command: ${repo;org.apache.felix.gogo.command;[0.12.0,0.13.0);HIGHEST}
+gogo-runtime: ${repo;org.apache.felix.gogo.runtime;[0.10.0,0.11.0);HIGHEST}
+gogo-shell: ${repo;org.apache.felix.gogo.shell;[0.10.0,0.11.0);HIGHEST}
+gogo-buildpath: ${gogo-command};version=file,\
+  ${gogo-runtime};version=file
+gogo-runpath: ${gogo-command};version=file,\
+  ${gogo-runtime};version=file,\
+  ${gogo-shell};version=file
+
+# Jackson
+#
+jackson-annotations=${repo;com.fasterxml.jackson.core.jackson-annotations;[2.3.0,2.4.0);HIGHEST}
+jackson-core=${repo;com.fasterxml.jackson.core.jackson-core;[2.3.0,2.4.0);HIGHEST}
+jackson-databind=${repo;com.fasterxml.jackson.core.jackson-databind;[2.3.0,2.4.0);HIGHEST}
+jackson-buildpath: ${jackson-annotations};version=file,\
+  ${jackson-core};version=file,\
+  ${jackson-databind};version=file
+jackson-runpath: ${jackson-annotations};version=file,\
+  ${jackson-core};version=file,\
+  ${jackson-databind};version=file
+
+# Avro
+#
+avro-core=${repo;avro;[1.7.7,1.8);HIGHEST}
+paranamer=${repo;com.thoughtworks.paranamer;2.7;HIGHEST}
+jackson-core-asl=${repo;jackson-core-asl;1.9;HIGHEST}
+jackson-mapper-asl=${repo;jackson-mapper-asl;1.9;HIGHEST}
+avro-buildpath: ${avro-core};version=file,\
+${paranamer};version=file,\
+${jackson-core-asl};version=file,\
+${jackson-mapper-asl};version=file,\
+
+# JMDNS
+#
+jmdns: ${repo;javax.jmdns;[3.4.2,3.5);HIGHEST}
+jmdns-buildpath: ${jmdns};version=file
+jmdns-runpath: ${jmdns};version=file
+
+# Junit
+#
+junit=${repo;biz.aQute.junit}
+mockito=${repo;org.mockito.mockito-all;[1.9,2);HIGHEST}
+junit-buildpath: ${junit};version=file,\
+  ${mockito};version=file
+junit-runpath: ${junit};version=file,\
+  ${mockito};version=file
+
+# Livetribe SLP
+#
+slp: ${workspace}/cnf/lib/org.livetribe.slp/org.livetribe.slp-2.2.2.jar
+slp-buildpath: ${slp};version=file
+slp-runpath:
+
+# SLF4j
+#
+slf4j-api: ${repo;slf4j.api;[1.7.7,1.8);HIGHEST}
+slf4j-simple: ${repo;slf4j.simple;[1.7.7,1.8);HIGHEST}
+slf4j-buildpath: ${slf4j-api};version=file,\
+  ${slf4j-simple};version=file
+slf4j-runpath: ${slf4j-api};version=file,\
+  ${slf4j-simple};version=file
+
+# Zookeeper
+#
+zk=${repo;org.apache.hadoop.zookeeper;[3.4.6,3.5);HIGHEST}
+zk-buildpath: ${zk};version=file
+zk-runpath: ${zk};version=file

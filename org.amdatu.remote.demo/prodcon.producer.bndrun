@@ -1,0 +1,24 @@
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+-runstorage: generated/prodcon.producer
+
+-runproperties: \
+	org.osgi.framework.bootdelegation=javax.*,\
+	org.osgi.service.http.port=9001,\
+	host=localhost
+
+-runbundles: \
+  ${osgi-enterprise-runpath},\
+  ${httpservice-runpath},\
+  ${logservice-runpath},\
+  ${configadmin-runpath},\
+  ${dm-runpath},\
+  ${gogo-runpath},\
+  org.amdatu.remote.discovery.bonjour;version=latest,\
+  org.amdatu.remote.admin.http;version=latest,\
+  org.amdatu.remote.topology.promiscuous;version=latest,\
+  org.amdatu.remote.demo.prodcon.statskeeper.api;version=latest,\
+  org.amdatu.remote.demo.prodcon.producer.api;version=latest,\
+  org.amdatu.remote.demo.prodcon.producer.impl;version=latest
