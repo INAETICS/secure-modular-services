@@ -15,5 +15,10 @@ Research project involving the integration of [Key Policy Attribute Based Encryp
 
 ## How to setup
 
-1. Check in workspace as BNDTools project in Eclipse.
-2. Run the chatdemo client1, and client2.
+1. Check in this workspace (import as Bnd-tools projects, use the provided [Eclipse IDE](https://amdatu.org/generaltop/gettingstarted/) from Amdatu).
+2. Setup [ETCD](https://github.com/coreos/etcd/releases/). This is the discovery mechanism we use for this demo.
+3. Start up one ETCD cluster on localhost with the default settings.
+4. Run the `inaeticsdemo.resolver.bndrun` with the `Bnd OSGi Run Launcher`.
+5. Run the `inaeticsdemo.module1.bndrun` with the `Bnd OSGi Run Launcher`.
+6. Run the `inaeticsdemo.module2.bndrun` with the `Bnd OSGi Run Launcher`.
+7. Inspect the keys in ETCD, you will only see ciphertext and no plaintext endpoints.
