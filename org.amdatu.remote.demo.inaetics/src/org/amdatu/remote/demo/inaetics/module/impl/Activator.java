@@ -20,14 +20,16 @@ public class Activator extends DependencyActivatorBase {
 
     @Override
     public void init(BundleContext context, DependencyManager manager) throws Exception {
-        ChatClient instance = new ChatClient();
+        String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
+        ServiceDemo instance = new ServiceDemo();
 
-        String userName = context.getProperty("chat.name");
-        String hostName = java.net.InetAddress.getLocalHost().getHostName();
+        String moduleName = context.getProperty("inaetics.module.name");
+        String applicationName = context.getProperty("inaetics.application.name");
+        String solutionName = context.getProperty("inaetics.solution.name");
 
         Properties props = new Properties();
         props.put(RemoteConstants.SERVICE_EXPORTED_INTERFACES, MessageReceiver.class.getName());
-        props.put("chat.name", userName + "@" + hostName);
+        props.put("module.context", moduleName + " (in " + applicationName + ", " + solutionName + ")");
 
         manager.add(createComponent()
             .setInterface(new String[] { MessageSender.class.getName(), MessageReceiver.class.getName() }, props)

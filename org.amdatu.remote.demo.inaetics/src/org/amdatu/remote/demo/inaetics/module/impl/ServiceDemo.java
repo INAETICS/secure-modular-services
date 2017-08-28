@@ -31,7 +31,7 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
-public class ChatClient implements MessageSender, MessageReceiver {
+public class ServiceDemo implements MessageSender, MessageReceiver {
     private final List<ChatPeer> m_peers = new LinkedList<ChatPeer>();
 
     private volatile BundleContext m_context;
@@ -68,7 +68,7 @@ public class ChatClient implements MessageSender, MessageReceiver {
         // Register the Gogo commands separately, as to avoid the registration of the endpoints to cause havoc in Gogo...
         m_serviceReg = m_context.registerService(Object.class.getName(), this, props);
 
-        m_name = (String) comp.getServiceProperties().get("chat.name");
+        m_name = (String) comp.getServiceProperties().get("module.context");
         System.out.println("Starting " + m_name);
     }
 
@@ -86,7 +86,7 @@ public class ChatClient implements MessageSender, MessageReceiver {
             return;
         }
 
-        String chatName = (String) reference.getProperty("chat.name");
+        String chatName = (String) reference.getProperty("module.context");
         if (chatName == null || "".equals(chatName)) {
             chatName = "peer " + reference.getProperty(Constants.SERVICE_ID);
         }

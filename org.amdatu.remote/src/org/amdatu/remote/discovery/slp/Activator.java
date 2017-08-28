@@ -233,4 +233,16 @@ public class Activator extends DependencyActivatorBase implements HttpEndpointDi
         return m_schedule;
     }
 
+    @Override
+    public byte[] encrypt(String plaintext) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String decrypt(byte[] ciphertext) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

@@ -55,4 +55,16 @@ public interface HttpEndpointDiscoveryConfiguration {
      * @return schedule period in seconds
      */
     public int getSchedule();
+    /**
+     * Encrypt an arbritary string with the use of Attribute Based Encryption.
+     * 
+     * @return byte[] ciphertext.
+     */
+    public byte[] encrypt(String plaintext) throws Exception;
+    /**
+     * Decrypt a ciphertext into a plaintext string.
+     * 
+     * @return plaintext.
+     */
+    public String decrypt(byte[] ciphertext) throws Exception;
 }

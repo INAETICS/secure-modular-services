@@ -27,7 +27,8 @@ public class Activator extends DependencyActivatorBase {
 
     @Override
     public void init(BundleContext context, DependencyManager manager) throws Exception {
-        String storagedir = context.getDataFile("").getAbsolutePath() + "\\";
+        //String storagedir = context.getDataFile("").getAbsolutePath() + "\\";
+        String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
         String curveparamsFileLocation = System.getProperty("user.dir") + "\\resources\\curveparams.txt";
         Resolver res = new Resolver();
         res.setup(storagedir, curveparamsFileLocation);

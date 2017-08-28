@@ -7,7 +7,9 @@
 -runstorage: generated/inaeticsdemo
 
 -runproperties: host=127.0.0.1,\
-  chat.name=client2,\
+  inaetics.module.name=module2,\
+  inaetics.application.name=application1,\
+  inaetics.solution.name=solution1,\
   name=,\
   org.osgi.framework.bootdelegation=javax.*,\
   org.osgi.service.http.port=9002,\

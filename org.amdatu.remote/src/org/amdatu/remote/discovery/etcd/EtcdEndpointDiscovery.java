@@ -16,6 +16,7 @@ package org.amdatu.remote.discovery.etcd;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -153,7 +154,8 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
                     }
                     try {
                         logDebug("Adding %s", node.key);
-                        endpoints.put(node.key, new URL(node.value));
+                        String endpoint = getConfiguration().decrypt(Base64.getDecoder().decode(node.value));
+                        endpoints.put(node.key, new URL(endpoint));
                     }
                     catch (Exception e) {
                         logWarning("Failed to add discovery endpoint", e);
@@ -275,18 +277,11 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
         @Override
         public void run() {
             try {
-                // ADDON
-//                String test_folder = "C://abeproject/";
-//                String curveparamsFileLocation = test_folder + "curveparams";
-//                
-//                KeyPolicyAttributeBasedEncryption kpabe = new KeyPolicyAttributeBasedEncryption();
-//                String pubfile = test_folder + "publickey";
-//                String mskfile = test_folder + "mastersecretkey";
-//                String[] attrs_univ = {"application1", "module1", "solution1"};
-//                kpabe.setup(pubfile, mskfile, attrs_univ, curveparamsFileLocation);
+                // ABE addon                
+                byte[] encryptedEndpoint = getConfiguration().encrypt(getConfiguration().getBaseUrl().toExternalForm());
                 
                 EtcdResponsePromise<EtcdKeysResponse> responsePromise =
-                    m_etcd.put(getLocalNodePath(), getConfiguration().getBaseUrl().toExternalForm())
+                    m_etcd.put(getLocalNodePath(), new String(Base64.getEncoder().encodeToString(encryptedEndpoint)))
                         .ttl(ETCD_REGISTRATION_TTL).send();
                 logDebug("registered at etcd index " + responsePromise.get().etcdIndex);
             }
