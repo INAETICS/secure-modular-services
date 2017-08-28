@@ -276,10 +276,10 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
         public void run() {
             try {
                 // ADDON
-                String test_folder = "C://abeproject/";
-                String curveparamsFileLocation = test_folder + "curveparams";
-                
-                KeyPolicyAttributeBasedEncryption kpabe = new KeyPolicyAttributeBasedEncryption();
+//                String test_folder = "C://abeproject/";
+//                String curveparamsFileLocation = test_folder + "curveparams";
+//                
+//                KeyPolicyAttributeBasedEncryption kpabe = new KeyPolicyAttributeBasedEncryption();
 //                String pubfile = test_folder + "publickey";
 //                String mskfile = test_folder + "mastersecretkey";
 //                String[] attrs_univ = {"application1", "module1", "solution1"};

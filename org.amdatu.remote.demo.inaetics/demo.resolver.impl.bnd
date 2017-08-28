@@ -1,0 +1,18 @@
+Bundle-Activator: org.amdatu.remote.demo.inaetics.resolver.impl.Activator
+Bundle-Name: Amdatu Remote - INAETICS Resolver demo
+Bundle-Version: 0.1.0
+
+Private-Package: \
+	org.amdatu.remote.demo.inaetics.resolver.impl,\
+	mousio.etcd4j.*,\
+	mousio.client.*,\
+	com.ning.compress.*,\
+	io.netty.*,\
+	lzma.sdk.*,\
+	org.slf4j.*,\
+	com.fasterxml.jackson.core.*,\
+	org.apache.commons.lang3.*,\
+	nl.sudohenk.kpabe.*,\
+	it.unisa.dia.gas.jpbc.*,\
+	it.unisa.dia.gas.plaf.*,\
+	com.sun.jna.*

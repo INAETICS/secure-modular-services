@@ -1,32 +1,31 @@
-package nl.sudohenk.kpabe;
+package org.amdatu.remote.demo.inaetics.resolver.impl;
 
-import nl.sudohenk.kpabe.KeyPolicyAttributeBasedEncryption;
-import nl.sudohenk.kpabe.gpswabe.gpswabePolicy;
-
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.MessageFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sudohenk.kpabe.Example;
+import nl.sudohenk.kpabe.KeyPolicyAttributeBasedEncryption;
+import nl.sudohenk.kpabe.gpswabe.gpswabePolicy;
 
-public class Example {
-
+public class Resolver {
+    private Logger logger = LoggerFactory.getLogger(Resolver.class);
     
-    public static void main(String[] args) throws Exception {
-        Logger logger = LoggerFactory.getLogger(Example.class);
+    public Resolver() {
         
-        String test_folder = "C://Users/Sander/git/kpabe/example/";
-        String curveparamsFileLocation = test_folder + "curveparams";
-        
+    }
+    
+    public void setup(String storagedir, String curveparamsFileLocation) throws Exception {
+        logger.info("Resolver is setting up the key scheme.");
         KeyPolicyAttributeBasedEncryption kpabe = new KeyPolicyAttributeBasedEncryption();
-        String pubfile = test_folder + "publickey";
-        String mskfile = test_folder + "mastersecretkey";
+        String pubfile = storagedir + "publickey";
+        String mskfile = storagedir + "mastersecretkey";
         String[] attrs_univ = {"application1", "module1", "solution1"};
         kpabe.setup(pubfile, mskfile, attrs_univ, curveparamsFileLocation);
         
-        String prvfile = test_folder + "policy";
+        String prvfile = storagedir + "policy";
         // Build up an access tree:
         // Example of what we want to achieve:
         //                          2 of 2
@@ -51,20 +50,15 @@ public class Example {
         gpswabePolicy policy = new gpswabePolicy(null, 2, null);
         gpswabePolicy[] policy_children = new gpswabePolicy[] {sub1_policy, sub2_policy};
         policy.setChildren(policy_children);
-        
+        // display generated policy
         policy.print();
-        
         kpabe.keygen(pubfile, mskfile, prvfile, policy);
-        
-        try {
-            byte[] plaintext = "Hello!".getBytes();
-            logger.info(MessageFormat.format("Plaintext is: {0}", new String(plaintext)));
-            byte[] ciphertext = kpabe.enc(pubfile, plaintext, attrs_univ);
-            logger.info(MessageFormat.format("Ciphertext is: {0}", new String(ciphertext)));
-            byte[] result = kpabe.dec(pubfile, prvfile, ciphertext);
-            logger.info(MessageFormat.format("Decrypted text is: {0}", new String(result)));
-        } catch(Exception e) {
-            logger.error("Encryption/Decryption failed failed");
-        }
+        logger.info("Resolver has finished setting up the scheme.");
+        logger.info(String.format("Context saved in %s", storagedir));
     }
+    
+    public void startSolution() {
+        
+    }
+    
 }

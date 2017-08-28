@@ -4,7 +4,7 @@
 
   <groupId>nl.sudohenk</groupId>
   <artifactId>kpabe</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
 
   <name>kpabe</name>
@@ -81,7 +81,7 @@
 				<configuration>
 					<!-- get all project dependencies -->
 					<descriptorRefs>
-						<descriptorRef>full</descriptorRef>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 					<!-- MainClass in mainfest make a executable jar -->
 					<archive>

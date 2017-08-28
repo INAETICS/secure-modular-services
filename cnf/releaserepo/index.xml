@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1502884775523" name="Release" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1503476385540" name="Release" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="it.unisa.dia.gas"/>
@@ -729,6 +729,99 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(osgi.wiring.package=org.xml.sax.helpers)"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.api"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="620951767087a914cd2dc1192e3f5ec679ae16a2f64b8155b8db357f4005d3e1"/>
+      <attribute name="url" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.api/org.amdatu.remote.demo.inaetics.inaetics.demo.module.api-0.1.0.jar"/>
+      <attribute name="size" type="Long" value="5617"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.api"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.api"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.amdatu.remote.demo.inaetics.module.api"/>
+      <attribute name="version" type="Version" value="0.1.0"/>
+      <attribute name="bundle-symbolic-name" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.api"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.impl"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="4147560f1507e437c9e2fa2690abfd81aad347e447d5920f219efb9a7ccc94e7"/>
+      <attribute name="url" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.impl/org.amdatu.remote.demo.inaetics.inaetics.demo.module.impl-0.1.0.jar"/>
+      <attribute name="size" type="Long" value="10583"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.impl"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.amdatu.remote.demo.inaetics.inaetics.demo.module.impl"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.amdatu.remote.demo.inaetics.module.api)(version&gt;=0.1.0)(!(version&gt;=1.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.felix.dm)(version&gt;=4.3.0)(!(version&gt;=5.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(version&gt;=1.7.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.amdatu.remote.demo.inaetics.inaetics.demo.resolver.impl"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="4fcab4538e97e0ae45e4b967e31fbb2e9e9fa5155bf26188dd935b8733ca6786"/>
+      <attribute name="url" value="org.amdatu.remote.demo.inaetics.inaetics.demo.resolver.impl/org.amdatu.remote.demo.inaetics.inaetics.demo.resolver.impl-0.1.0.jar"/>
+      <attribute name="size" type="Long" value="5483"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.amdatu.remote.demo.inaetics.inaetics.demo.resolver.impl"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.amdatu.remote.demo.inaetics.inaetics.demo.resolver.impl"/>
+      <attribute name="bundle-version" type="Version" value="0.1.0"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.felix.dm)(version&gt;=4.3.0)(!(version&gt;=5.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(version&gt;=1.7.0)(!(version&gt;=2.0.0)))"/>
     </requirement>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>

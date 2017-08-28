@@ -1,0 +1,25 @@
+
+-runfw: ${framework-runpath}
+-runee: JavaSE-1.8
+-runvm: -ea
+-runsystemcapabilities: ${native_capability}
+-runsystempackages: sun.misc
+-runstorage: generated/inaeticsdemo
+
+-runproperties: host=127.0.0.1,\
+  chat.name=client2,\
+  name=,\
+  org.osgi.framework.bootdelegation=javax.*,\
+  org.osgi.service.http.port=9002,\
+  org.amdatu.remote.discovery.etcd.connecturl=http://127.0.0.1:2379,\
+  org.amdatu.remote.discovery.etcd.rootpath=/discovery2
+
+-runbundles: \
+  ${osgi-enterprise-runpath},\
+  ${httpservice-runpath},\
+  ${logservice-runpath},\
+  ${configadmin-runpath},\
+  ${dm-runpath},\
+  ${gogo-runpath},\
+  org.amdatu.remote.demo.inaetics.demo.resolver.impl;version=latest
+	
