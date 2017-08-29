@@ -22,6 +22,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.amdatu.remote.discovery.AbstractNoEncryptionActivator;
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyActivatorBase;
 import org.apache.felix.dm.DependencyManager;
@@ -39,7 +40,7 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
  * 
  */
 @SuppressWarnings("deprecation")
-public class Activator extends DependencyActivatorBase implements ZookeeperDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractNoEncryptionActivator implements ZookeeperDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.zookeeper";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";
@@ -91,6 +92,8 @@ public class Activator extends DependencyActivatorBase implements ZookeeperDisco
         m_connectString = connectString;
         m_rootPath = rootPath;
         m_tickTime = tickTime;
+        
+        initEncryption(context);
 
         if (!m_connectString.equals("")) {
             registerDiscoveryService();
@@ -286,17 +289,5 @@ public class Activator extends DependencyActivatorBase implements ZookeeperDisco
     @Override
     public int getTickTime() {
         return m_tickTime;
-    }
-
-    @Override
-    public byte[] encrypt(String plaintext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String decrypt(byte[] ciphertext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

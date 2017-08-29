@@ -24,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Set;
 
+import org.amdatu.remote.discovery.AbstractNoEncryptionActivator;
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyActivatorBase;
 import org.apache.felix.dm.DependencyManager;
@@ -40,7 +41,7 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 @SuppressWarnings("deprecation")
-public class Activator extends DependencyActivatorBase implements ConfiguredDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractNoEncryptionActivator implements ConfiguredDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.configured";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";
@@ -80,6 +81,8 @@ public class Activator extends DependencyActivatorBase implements ConfiguredDisc
         m_endpoints = endpoints;
         m_connectTimeout = connectTimeout;
         m_readTimeout = readTimeout;
+        
+        initEncryption(context);
 
         registerDiscoveryService();
         registerConfigurationService();
@@ -262,15 +265,4 @@ public class Activator extends DependencyActivatorBase implements ConfiguredDisc
         return m_endpoints;
     }
 
-    @Override
-    public byte[] encrypt(String plaintext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String decrypt(byte[] ciphertext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

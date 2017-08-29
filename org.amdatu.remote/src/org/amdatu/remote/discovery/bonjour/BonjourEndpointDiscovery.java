@@ -15,6 +15,7 @@ package org.amdatu.remote.discovery.bonjour;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,8 @@ public final class BonjourEndpointDiscovery extends AbstractHttpEndpointDiscover
         m_jmDNS.addServiceListener(SERVICE_TYPE, m_jmDNSListener);
 
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put("path", localEndpoint.getPath());
+        String encryptedEndpoint = getConfiguration().encrypt(localEndpoint.getPath());
+        props.put("path", encryptedEndpoint);
         ServiceInfo info = ServiceInfo.create(SERVICE_TYPE, DISCOVERY_NAME, localEndpoint.getPort(), 0, 0, props);
         m_jmDNS.registerService(info);
     }
@@ -99,12 +101,13 @@ public final class BonjourEndpointDiscovery extends AbstractHttpEndpointDiscover
         @Override
         public void serviceRemoved(ServiceEvent serviceEvent) {
             ServiceInfo serviceInfo = serviceEvent.getInfo();
-            for (String url : serviceInfo.getURLs()) {
+            for (String enc_url : serviceInfo.getURLs()) {
                 try {
+                    String url = getConfiguration().decrypt(enc_url);
                     removeDiscoveryEndpoint(serviceInfo.getKey() + url);
                 }
                 catch (Exception e) {
-                    logError("Failed to parse service URL: %s", e, url);
+                    logError("Failed to parse service URL: %s", e, enc_url);
                 }
             }
         }
@@ -112,13 +115,14 @@ public final class BonjourEndpointDiscovery extends AbstractHttpEndpointDiscover
         @Override
         public void serviceResolved(ServiceEvent serviceEvent) {
             ServiceInfo serviceInfo = serviceEvent.getInfo();
-            for (String url : serviceInfo.getURLs()) {
+            for (String enc_url : serviceInfo.getURLs()) {
                 try {
+                    String url = getConfiguration().decrypt(enc_url);
                     URL serviceUrl = new URL(url);
                     addDiscoveryEndpoint(serviceInfo.getKey() + url, serviceUrl);
                 }
                 catch (Exception e) {
-                    logError("Failed to parse service URL: %s", e, url);
+                    logError("Failed to parse service URL: %s", e, enc_url);
                 }
             }
         }

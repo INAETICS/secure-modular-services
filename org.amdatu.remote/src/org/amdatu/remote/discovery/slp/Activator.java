@@ -22,6 +22,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.amdatu.remote.discovery.AbstractNoEncryptionActivator;
 import org.amdatu.remote.discovery.HttpEndpointDiscoveryConfiguration;
 import org.amdatu.remote.discovery.bonjour.BonjourEndpointDiscovery;
 import org.apache.felix.dm.Component;
@@ -40,7 +41,7 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 @SuppressWarnings("deprecation")
-public class Activator extends DependencyActivatorBase implements HttpEndpointDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractNoEncryptionActivator implements HttpEndpointDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.slp";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";
@@ -77,6 +78,8 @@ public class Activator extends DependencyActivatorBase implements HttpEndpointDi
         m_schedule = schedule;
         m_connectTimeout = connectTimeout;
         m_readTimeout = readTimeout;
+        
+        initEncryption(context);
 
         registerDiscoveryService();
         registerConfigurationService();
@@ -231,18 +234,6 @@ public class Activator extends DependencyActivatorBase implements HttpEndpointDi
     @Override
     public int getSchedule() {
         return m_schedule;
-    }
-
-    @Override
-    public byte[] encrypt(String plaintext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String decrypt(byte[] ciphertext) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

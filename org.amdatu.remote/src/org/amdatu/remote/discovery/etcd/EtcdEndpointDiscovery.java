@@ -154,7 +154,7 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
                     }
                     try {
                         logDebug("Adding %s", node.key);
-                        String endpoint = getConfiguration().decrypt(Base64.getDecoder().decode(node.value));
+                        String endpoint = getConfiguration().decrypt(node.value);
                         endpoints.put(node.key, new URL(endpoint));
                     }
                     catch (Exception e) {
@@ -278,10 +278,9 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
         public void run() {
             try {
                 // ABE addon                
-                byte[] encryptedEndpoint = getConfiguration().encrypt(getConfiguration().getBaseUrl().toExternalForm());
-                
+                String encryptedEndpoint = getConfiguration().encrypt(getConfiguration().getBaseUrl().toExternalForm());
                 EtcdResponsePromise<EtcdKeysResponse> responsePromise =
-                    m_etcd.put(getLocalNodePath(), new String(Base64.getEncoder().encodeToString(encryptedEndpoint)))
+                    m_etcd.put(getLocalNodePath(), encryptedEndpoint)
                         .ttl(ETCD_REGISTRATION_TTL).send();
                 logDebug("registered at etcd index " + responsePromise.get().etcdIndex);
             }

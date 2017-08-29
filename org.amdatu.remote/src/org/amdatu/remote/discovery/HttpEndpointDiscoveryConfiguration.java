@@ -56,15 +56,15 @@ public interface HttpEndpointDiscoveryConfiguration {
      */
     public int getSchedule();
     /**
-     * Encrypt an arbritary string with the use of Attribute Based Encryption.
+     * Encrypt an arbritary string.
      * 
      * @return byte[] ciphertext.
      */
-    public byte[] encrypt(String plaintext) throws Exception;
+    public String encrypt(String plaintext) throws Exception;
     /**
      * Decrypt a ciphertext into a plaintext string.
      * 
      * @return plaintext.
      */
-    public String decrypt(byte[] ciphertext) throws Exception;
+    public String decrypt(String value) throws Exception;
 }

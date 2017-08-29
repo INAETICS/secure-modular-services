@@ -22,6 +22,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.amdatu.remote.discovery.AbstractAttributeBasedEncryptionActivator;
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyActivatorBase;
 import org.apache.felix.dm.DependencyManager;
@@ -40,7 +41,7 @@ import nl.sudohenk.kpabe.KeyPolicyAttributeBasedEncryption;
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 @SuppressWarnings("deprecation")
-public class Activator extends DependencyActivatorBase implements EtcdDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractAttributeBasedEncryptionActivator implements EtcdDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.etcd";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";
@@ -67,15 +68,11 @@ public class Activator extends DependencyActivatorBase implements EtcdDiscoveryC
     private volatile String m_connectUrl;
     private volatile String m_rootPath;
     
-    private volatile String pub_file;
-    private volatile String prv_file;
-    private volatile String[] attrs;
-    private volatile KeyPolicyAttributeBasedEncryption kpabe;
+    
     
 
     @Override
     public void init(BundleContext context, DependencyManager manager) throws Exception {
-
         m_context = context;
         m_manager = manager;
 
@@ -93,11 +90,7 @@ public class Activator extends DependencyActivatorBase implements EtcdDiscoveryC
         m_connectUrl = connectUrl;
         m_rootPath = rootPath;
         
-        kpabe = new KeyPolicyAttributeBasedEncryption();
-        String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
-        pub_file = storagedir + "publickey";
-        prv_file = storagedir + "policy";
-        attrs = new String[]{"application1", "module1", "solution1"};
+        initEncryption(context);
 
         if (!m_connectUrl.equals("")) {
             registerDiscoveryService();
@@ -283,17 +276,6 @@ public class Activator extends DependencyActivatorBase implements EtcdDiscoveryC
     public String getRootPath() {
         return m_rootPath;
     }
-
-    @Override
-    public byte[] encrypt(String plaintext) throws Exception {
-        return kpabe.enc(pub_file, plaintext.getBytes(), attrs);
-    }
-
-    @Override
-    public String decrypt(byte[] ciphertext) throws Exception {
-        return new String(kpabe.dec(pub_file, prv_file, ciphertext));
-    }
-
     
 
 }
