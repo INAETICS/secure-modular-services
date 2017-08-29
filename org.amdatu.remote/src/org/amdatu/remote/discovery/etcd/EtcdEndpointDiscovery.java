@@ -177,23 +177,27 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
         try {
             index = response.node.modifiedIndex;
             logDebug("Handling peer endpoint change at etcd index %s", index);
+            String nodeVal = getConfiguration().decrypt(response.node.value);
+            String prevNodeVal = null;
+            if(response.prevNode != null && response.prevNode.value != null) {
+                prevNodeVal = getConfiguration().decrypt(response.prevNode.value);
+            }
             if (!response.node.key.endsWith(getLocalNodePath())) {
                 // we get "set" on a watch response
                 if (response.action == EtcdKeyAction.set) {
-
                     // when its changed, first remove old endpoint
-                    if (response.prevNode != null && !response.prevNode.value.equals(response.node.value)) {
+                    if (prevNodeVal != null && !prevNodeVal.equals(nodeVal)) {
                         removeDiscoveryEndpoint(response.prevNode.key);
                     }
 
                     // when it's new or changed, add endpoint
-                    if (response.prevNode == null || !response.prevNode.value.equals(response.node.value)) {
-                        addDiscoveryEndpoint(response.node.key, new URL(response.node.value));
+                    if (prevNodeVal == null || !prevNodeVal.equals(nodeVal)) {
+                        addDiscoveryEndpoint(response.node.key, new URL(nodeVal));
                     }
                 }
                 // remove endpoint on "delete" or "expire", and it's not about ourself
                 else if ((response.action == EtcdKeyAction.delete || response.action == EtcdKeyAction.expire)
-                    && !response.prevNode.value.equals(getConfiguration().getBaseUrl())) {
+                    && !prevNodeVal.equals(getConfiguration().getBaseUrl())) {
                     removeDiscoveryEndpoint(response.prevNode.key);
                 }
             }

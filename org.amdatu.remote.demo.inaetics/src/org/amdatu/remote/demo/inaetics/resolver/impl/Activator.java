@@ -20,6 +20,8 @@ import org.osgi.framework.BundleContext;
  * @author SudoHenk
  */
 public class Activator extends DependencyActivatorBase {
+    public static final String INAETICS_ATTRS_UNIVERSE = "inaetics.attrs_univ";
+    
     @Override
     public void destroy(BundleContext context, DependencyManager manager) throws Exception {
         // Nop
@@ -27,11 +29,11 @@ public class Activator extends DependencyActivatorBase {
 
     @Override
     public void init(BundleContext context, DependencyManager manager) throws Exception {
-        //String storagedir = context.getDataFile("").getAbsolutePath() + "\\";
         String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
         String curveparamsFileLocation = System.getProperty("user.dir") + "\\resources\\curveparams.txt";
+        String[] attrs_univ = context.getProperty(INAETICS_ATTRS_UNIVERSE).split(";");
         Resolver res = new Resolver();
-        res.setup(storagedir, curveparamsFileLocation);
+        res.setup(storagedir, curveparamsFileLocation, attrs_univ);
         res.startSolution();
     }
 }

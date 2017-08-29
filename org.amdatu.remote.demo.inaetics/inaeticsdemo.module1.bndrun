@@ -7,7 +7,7 @@
 -runstorage: generated/inaeticsdemo
 
 -runproperties: host=127.0.0.1,\
-  inaetics.module.name=access-to-module-1,\
+  inaetics.module.name=module-1,\
   inaetics.application.name=application-1,\
   inaetics.solution.name=solution-1,\
   name=,\

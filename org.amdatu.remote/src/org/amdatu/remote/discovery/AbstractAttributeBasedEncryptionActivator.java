@@ -17,6 +17,10 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     public static final String INAETICS_SCOPE_SOLUTION = "inaetics.solution.name";
     public static final String INAETICS_SCOPE_APPLICATION = "inaetics.application.name";
     public static final String INAETICS_SCOPE_MODULE = "inaetics.module.name";
+    
+    private volatile String scope_solution;
+    private volatile String scope_application;
+    private volatile String scope_module;
                     
     private volatile String pub_file;
     private volatile String prv_file;
@@ -26,14 +30,17 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     public void initEncryption(BundleContext context) throws Exception {
         kpabe = new KeyPolicyAttributeBasedEncryption();
         String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
+        
+        scope_solution = getConfigStringValue(context, INAETICS_SCOPE_SOLUTION, null, null);
+        scope_application = getConfigStringValue(context, INAETICS_SCOPE_APPLICATION, null, null);
+        scope_module = getConfigStringValue(context, INAETICS_SCOPE_MODULE, null, null);
+        
         pub_file = storagedir + "publickey";
-        prv_file = storagedir + "policy";
-        String scope_solution = getConfigStringValue(context, INAETICS_SCOPE_SOLUTION, null, null);
-        String scope_application = getConfigStringValue(context, INAETICS_SCOPE_APPLICATION, null, null);
-        String scope_module = getConfigStringValue(context, INAETICS_SCOPE_MODULE, null, null);
+        prv_file = String.format("%spolicy-%s", storagedir, scope_module);
         
         attrs = new String[]{scope_solution, scope_application, scope_module};
     }
+    
     /**
      * Encryption method for ABE.
      * @param plaintext String to encrypt.
@@ -43,6 +50,7 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     public String encrypt(String plaintext) throws Exception {
         return new String(Base64.getEncoder().encodeToString(kpabe.enc(pub_file, plaintext.getBytes(), attrs)));
     }
+    
     /**
      * Decryption method for ABE.
      * @param ciphertext ciphertext in Base64.
@@ -52,4 +60,32 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     public String decrypt(String ciphertext) throws Exception {
         return new String(kpabe.dec(pub_file, prv_file, Base64.getDecoder().decode(ciphertext)));
     }
+    
+    /**
+     * Retrieve the current INAETICS scope (solution)
+     * @return
+     */
+    public String getScopeSolution() {
+        return scope_solution;
+    }
+    
+    /**
+     * Retrieve the current INAETICS scope (application)
+     * @return
+     */
+    public String getScopeApplication() {
+        return scope_application;
+    }
+    
+    /**
+     * Retrieve the current INAETICS scope (module)
+     * @return
+     */
+    public String getScopeModule() {
+        return scope_module;
+    }
+    
+    
+    
+    
 }
