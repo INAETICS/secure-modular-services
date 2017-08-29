@@ -22,6 +22,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.amdatu.remote.discovery.AbstractAttributeBasedEncryptionActivator;
 import org.amdatu.remote.discovery.AbstractNoEncryptionActivator;
 import org.amdatu.remote.discovery.HttpEndpointDiscoveryConfiguration;
 import org.amdatu.remote.discovery.bonjour.BonjourEndpointDiscovery;
@@ -41,7 +42,7 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 @SuppressWarnings("deprecation")
-public class Activator extends AbstractNoEncryptionActivator implements HttpEndpointDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractAttributeBasedEncryptionActivator implements HttpEndpointDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.slp";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";

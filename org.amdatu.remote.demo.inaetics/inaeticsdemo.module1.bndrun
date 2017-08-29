@@ -7,9 +7,9 @@
 -runstorage: generated/inaeticsdemo
 
 -runproperties: host=127.0.0.1,\
-  inaetics.module.name=module1,\
-  inaetics.application.name=application1,\
-  inaetics.solution.name=solution1,\
+  inaetics.module.name=access-to-module-1,\
+  inaetics.application.name=application-1,\
+  inaetics.solution.name=solution-1,\
   name=,\
   org.osgi.framework.bootdelegation=javax.*,\
   org.osgi.service.http.port=9001,\

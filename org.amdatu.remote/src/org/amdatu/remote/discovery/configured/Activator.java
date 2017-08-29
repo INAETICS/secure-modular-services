@@ -24,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Set;
 
+import org.amdatu.remote.discovery.AbstractAttributeBasedEncryptionActivator;
 import org.amdatu.remote.discovery.AbstractNoEncryptionActivator;
 import org.apache.felix.dm.Component;
 import org.apache.felix.dm.DependencyActivatorBase;
@@ -41,7 +42,7 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
  * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 @SuppressWarnings("deprecation")
-public class Activator extends AbstractNoEncryptionActivator implements ConfiguredDiscoveryConfiguration, ManagedService {
+public class Activator extends AbstractAttributeBasedEncryptionActivator implements ConfiguredDiscoveryConfiguration, ManagedService {
 
     public static final String CONFIG_PID = "org.amdatu.remote.discovery.configured";
     public static final String CONFIG_HOST_KEY = CONFIG_PID + ".host";

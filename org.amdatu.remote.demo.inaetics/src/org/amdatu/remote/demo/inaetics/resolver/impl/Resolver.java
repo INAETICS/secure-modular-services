@@ -22,7 +22,7 @@ public class Resolver {
         KeyPolicyAttributeBasedEncryption kpabe = new KeyPolicyAttributeBasedEncryption();
         String pubfile = storagedir + "publickey";
         String mskfile = storagedir + "mastersecretkey";
-        String[] attrs_univ = {"application1", "module1", "solution1"};
+        String[] attrs_univ = {"solution-1",  "application-1", "access-to-module-1", "access-to-module-2" };
         kpabe.setup(pubfile, mskfile, attrs_univ, curveparamsFileLocation);
         
         String prvfile = storagedir + "policy";
@@ -40,10 +40,10 @@ public class Resolver {
         //      (solution1 AND (application1 OR module1))
         
         // "solution1" (leaf)
-        gpswabePolicy sub1_policy = new gpswabePolicy("solution1", 1, null);
+        gpswabePolicy sub1_policy = new gpswabePolicy("solution-1", 1, null);
         // "application1 or module1" (1 out of 2)
         gpswabePolicy sub2_policy = new gpswabePolicy(null, 1, null);
-        gpswabePolicy[] sub2_children = new gpswabePolicy[] {new gpswabePolicy("application1", 1, null), new gpswabePolicy("module1", 1, null)};
+        gpswabePolicy[] sub2_children = new gpswabePolicy[] {new gpswabePolicy("application-1", 1, null), new gpswabePolicy("access-to-module-1", 1, null)};
         sub2_policy.setChildren(sub2_children);
         
         // assemble policy tree into the root
