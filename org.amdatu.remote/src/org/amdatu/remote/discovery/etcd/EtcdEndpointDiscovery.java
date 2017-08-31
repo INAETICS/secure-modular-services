@@ -177,7 +177,10 @@ public final class EtcdEndpointDiscovery extends AbstractHttpEndpointDiscovery<E
         try {
             index = response.node.modifiedIndex;
             logDebug("Handling peer endpoint change at etcd index %s", index);
-            String nodeVal = getConfiguration().decrypt(response.node.value);
+            String nodeVal = null;
+            if(response.node.value != null) {
+                nodeVal = getConfiguration().decrypt(response.node.value);
+            }
             String prevNodeVal = null;
             if(response.prevNode != null && response.prevNode.value != null) {
                 prevNodeVal = getConfiguration().decrypt(response.prevNode.value);

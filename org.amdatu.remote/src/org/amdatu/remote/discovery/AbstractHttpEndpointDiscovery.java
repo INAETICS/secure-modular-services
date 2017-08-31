@@ -38,7 +38,7 @@ public abstract class AbstractHttpEndpointDiscovery<T extends HttpEndpointDiscov
     private final T m_configuration;
     private volatile ScheduledExecutorService m_executor;
     private volatile HttpService m_http;
-    private volatile HttpEndpointDiscoveryServlet m_servlet;
+    private volatile SecureHttpEndpointDiscoveryServlet<T> m_servlet;
     private volatile HttpEndpointDiscoveryPoller m_poller;
 
     public AbstractHttpEndpointDiscovery(String name, T configuration) {
@@ -53,7 +53,7 @@ public abstract class AbstractHttpEndpointDiscovery<T extends HttpEndpointDiscov
 
         URL localEndpoint = m_configuration.getBaseUrl();
 
-        m_servlet = new HttpEndpointDiscoveryServlet(this);
+        m_servlet = new SecureHttpEndpointDiscoveryServlet<T>(this, m_configuration);
         m_http.registerServlet(getServletAlias(localEndpoint), m_servlet, null, null);
         m_poller = new HttpEndpointDiscoveryPoller(m_executor, this, m_configuration);
     }

@@ -13,5 +13,5 @@
 	${jmdns-buildpath},\
 	${zk-buildpath},\
 	${avro-buildpath},\
-	lib/kpabe-full.jar;version=file
+	lib/kpabe.jar;version=file
 -sub: *.bnd

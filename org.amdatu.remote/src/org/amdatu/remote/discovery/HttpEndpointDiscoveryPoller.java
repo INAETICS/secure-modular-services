@@ -13,7 +13,7 @@
  */
 package org.amdatu.remote.discovery;
 
-import static org.amdatu.remote.EndpointUtil.readEndpoints;
+import static org.amdatu.remote.SecureEndpointUtil.readEndpoints;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -240,7 +240,7 @@ public final class HttpEndpointDiscoveryPoller {
                         // If the other side signals on OK we update local state
                         // and signal modified to the caller.
                         reader = new InputStreamReader(connection.getInputStream());
-                        m_updatedServices.addAll(readEndpoints(reader));
+                        m_updatedServices.addAll(readEndpoints(reader, m_configuration));
                         m_modifiedSince = connection.getLastModified();
                         modified = true;
                         break;
