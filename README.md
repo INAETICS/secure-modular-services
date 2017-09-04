@@ -22,3 +22,11 @@ Research project involving the integration of [Key Policy Attribute Based Encryp
 5. Run the `inaeticsdemo.module1.bndrun` with the `Bnd OSGi Run Launcher`.
 6. Run the `inaeticsdemo.module2.bndrun` with the `Bnd OSGi Run Launcher`.
 7. Inspect the keys in ETCD, you will only see ciphertext and no plaintext endpoints.
+
+## Disable/Enable encryption
+
+By default the ABE encryption is enabled. If you want to debug/view the setup without encryption you can execute the following steps:
+
+* Open `org.amdatu.remote.discovery.etcd.Activator` and change the `extends AbstractAttributeBasedEncryptionActivator` to `extends AbstractNoEncryptionActivator`. This disables the encryption of the discovery information stored in ETCD.
+* Open `org.amdatu.remote.discovery.AbstractHttpEndpointDiscovery` and change `private volatile SecureHttpEndpointDiscoveryServlet<T> m_servlet;` to `private volatile HttpEndpointDiscoveryServlet m_servlet;`. In the same class find `m_servlet = new SecureHttpEndpointDiscoveryServlet<T>(this, m_configuration);` and change it to `m_servlet = new HttpEndpointDiscoveryServlet(this);`. This disables the encryption of the endpoint descriptors (XML).
+* Rebuild project and run the same demo again. This time you can see in ETCD that all the information is in plaintext.

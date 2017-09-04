@@ -17,6 +17,9 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     public static final String INAETICS_SCOPE_SOLUTION = "inaetics.solution.name";
     public static final String INAETICS_SCOPE_APPLICATION = "inaetics.application.name";
     public static final String INAETICS_SCOPE_MODULE = "inaetics.module.name";
+    public static final String INAETICS_PARAMS_STORAGEFOLDER = "inaetics.params.storagefolder";
+    public static final String INAETICS_PARAMS_PK_FILENAME = "inaetics.params.publickey.filename";
+    public static final String INAETICS_PARAMS_POLICY_FILENAME = "inaetics.params.policy.filename";
     
     private volatile String scope_solution;
     private volatile String scope_application;
@@ -29,14 +32,17 @@ public abstract class AbstractAttributeBasedEncryptionActivator extends Dependen
     
     public void initEncryption(BundleContext context) throws Exception {
         kpabe = new KeyPolicyAttributeBasedEncryption();
-        String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
+        String storagedir = getConfigStringValue(context, INAETICS_PARAMS_STORAGEFOLDER, null, null);
+        if(storagedir == null || storagedir.equals("")) {
+            storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
+        }
         
         scope_solution = getConfigStringValue(context, INAETICS_SCOPE_SOLUTION, null, null);
         scope_application = getConfigStringValue(context, INAETICS_SCOPE_APPLICATION, null, null);
         scope_module = getConfigStringValue(context, INAETICS_SCOPE_MODULE, null, null);
         
-        pub_file = storagedir + "publickey";
-        prv_file = String.format("%spolicy-%s", storagedir, scope_module);
+        pub_file = storagedir + getConfigStringValue(context, INAETICS_PARAMS_PK_FILENAME, null, null);
+        prv_file = storagedir + getConfigStringValue(context, INAETICS_PARAMS_POLICY_FILENAME, null, null);
         
         attrs = new String[]{scope_solution, scope_application, scope_module};
     }

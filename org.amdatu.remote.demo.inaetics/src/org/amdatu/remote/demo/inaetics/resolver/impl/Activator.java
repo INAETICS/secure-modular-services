@@ -20,7 +20,8 @@ import org.osgi.framework.BundleContext;
  * @author SudoHenk
  */
 public class Activator extends DependencyActivatorBase {
-    public static final String INAETICS_ATTRS_UNIVERSE = "inaetics.attrs_univ";
+    public static final String INAETICS_SCOPES_SOLUTION = "inaetics.scopes.solution";
+    public static final String INAETICS_SCOPES_MODULES = "inaetics.scopes.modules";
     
     @Override
     public void destroy(BundleContext context, DependencyManager manager) throws Exception {
@@ -31,9 +32,10 @@ public class Activator extends DependencyActivatorBase {
     public void init(BundleContext context, DependencyManager manager) throws Exception {
         String storagedir = System.getProperty("user.dir") + "\\resources\\tmp\\";
         String curveparamsFileLocation = System.getProperty("user.dir") + "\\resources\\curveparams.txt";
-        String[] attrs_univ = context.getProperty(INAETICS_ATTRS_UNIVERSE).split(";");
+        String solution = context.getProperty(INAETICS_SCOPES_SOLUTION);
+        String[] modules = context.getProperty(INAETICS_SCOPES_MODULES).split(";");
         Resolver res = new Resolver();
-        res.setup(storagedir, curveparamsFileLocation, attrs_univ);
+        res.setup(storagedir, curveparamsFileLocation, solution, modules);
         res.startSolution();
     }
 }

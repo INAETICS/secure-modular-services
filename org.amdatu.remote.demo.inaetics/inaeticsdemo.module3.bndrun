@@ -4,14 +4,14 @@
 -runvm: -ea
 -runsystemcapabilities: ${native_capability}
 -runsystempackages: sun.misc
--runstorage: generated/inaticsmodule2
+-runstorage: generated/inaticsmodule3
 
 -runproperties: host=127.0.0.1,\
-  inaetics.module.name=module-2,\
-  inaetics.application.name=application-1,\
+  inaetics.module.name=module-3,\
+  inaetics.application.name=application-2,\
   inaetics.solution.name=solution-1,\
   inaetics.params.storagefolder=,\
-  inaetics.params.policy.filename=policy-module-2,\
+  inaetics.params.policy.filename=policy-module-3,\
   inaetics.params.publickey.filename=publickey,\
   amdatu.remote.logging.level=3,\
   amdatu.remote.console.level=3,\

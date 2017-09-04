@@ -2,6 +2,9 @@ package org.amdatu.remote.demo.inaetics.resolver.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,21 +30,29 @@ public class Resolver {
      * @param attrs_univ
      * @throws Exception
      */
-    public void setup(String storagedir, String curveparamsFileLocation, String[] attrs_univ) throws Exception {
+    public void setup(String storagedir, String curveparamsFileLocation, String solution, String[] modules) throws Exception {
         kpabe = new KeyPolicyAttributeBasedEncryption();
         this.storagedir = storagedir;
         logger.info("Resolver is setting up the key scheme.");
         // setup public/private key
         pubfile = this.storagedir + "publickey";
         mskfile = this.storagedir + "mastersecretkey";
-        kpabe.setup(pubfile, mskfile, attrs_univ, curveparamsFileLocation);
+        Set<String> attrs_univ = new HashSet<String>();
+        attrs_univ.add(solution);
+        for (int i = 0; i < modules.length; i++) {
+            String[] parts = modules[i].split(":");
+            attrs_univ.add(parts[0]);
+            attrs_univ.add(parts[1]);
+        }
+        
+        kpabe.setup(pubfile, mskfile, attrs_univ.toArray(new String[attrs_univ.size()]), curveparamsFileLocation);
         
         logger.info("Resolver has finished setting up the scheme.");
         // setup policies
-        String solution = attrs_univ[0];
-        String application = attrs_univ[1];
-        for (int i = 2; i < attrs_univ.length; i++) {
-            String module = attrs_univ[i];
+        for (int i = 0; i < modules.length; i++) {
+            String[] parts = modules[i].split(":");
+            String application = parts[1];
+            String module = parts[0];
             this.generatePolicy(solution, application, module);
         }
         

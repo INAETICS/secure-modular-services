@@ -18,6 +18,9 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.amdatu.remote.demo.inaetics.module.api.MessageReceiver;
 import org.amdatu.remote.demo.inaetics.module.api.MessageSender;
@@ -37,13 +40,14 @@ public class ServiceDemo implements MessageSender, MessageReceiver {
     private volatile BundleContext m_context;
     private volatile ServiceRegistration<?> m_serviceReg;
     private volatile String m_name;
+    private volatile ScheduledExecutorService m_initExecutor;
 
     @Override
     public void receive(String sender, String message) {
         if (message.length() < 2) {
             throw new IllegalArgumentException("Too short!");
         }
-        System.out.printf("%s> %s%n", sender, message);
+        System.out.printf("[Service] %s> %s%n", sender, message);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class ServiceDemo implements MessageSender, MessageReceiver {
             peers = new ArrayList<ChatPeer>(m_peers);
         }
 
-        System.out.printf("you> %s%n", message);
+        System.out.printf("[Service] you> %s%n", message);
 
         for (ChatPeer peer : peers) {
             peer.getMessageReceiver().receive(m_name, message);
@@ -69,7 +73,11 @@ public class ServiceDemo implements MessageSender, MessageReceiver {
         m_serviceReg = m_context.registerService(Object.class.getName(), this, props);
 
         m_name = (String) comp.getServiceProperties().get("module.context");
-        System.out.println("Starting " + m_name);
+        System.out.println(String.format("[Service] Starting ServiceDemo running in (%s)", m_name));
+        
+        m_initExecutor = Executors.newSingleThreadScheduledExecutor();
+        m_initExecutor.execute(new ServiceRepeatTask());
+        
     }
 
     void stop(Component comp) throws Exception {
@@ -78,6 +86,19 @@ public class ServiceDemo implements MessageSender, MessageReceiver {
             m_serviceReg = null;
         }
         System.out.println("Stopping " + m_name);
+    }
+
+    private class ServiceRepeatTask implements Runnable {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1000);
+                send("TEST");
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            
+        }
     }
 
     void addReceiver(ServiceReference<MessageReceiver> reference,

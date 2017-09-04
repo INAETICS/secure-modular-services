@@ -33,9 +33,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Parses an XML representation according to {@code http://www.osgi.org/xmlns/rsa/v1.0.0/rsa.xsd}
+ * 
+ * @author Sudohenk
  *
- * @author <a href="mailto:amdatu-developers@amdatu.org">Amdatu Project Team</a>
  */
 public final class SecureEndpointDescriptorReader {
 

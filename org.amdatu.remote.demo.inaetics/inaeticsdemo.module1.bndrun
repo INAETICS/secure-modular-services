@@ -4,12 +4,17 @@
 -runvm: -ea
 -runsystemcapabilities: ${native_capability}
 -runsystempackages: sun.misc
--runstorage: generated/inaeticsdemo
+-runstorage: generated/inaticsmodule1
 
 -runproperties: host=127.0.0.1,\
   inaetics.module.name=module-1,\
   inaetics.application.name=application-1,\
   inaetics.solution.name=solution-1,\
+  inaetics.params.storagefolder=,\
+  inaetics.params.policy.filename=policy-module-1,\
+  inaetics.params.publickey.filename=publickey,\
+  amdatu.remote.logging.level=3,\
+  amdatu.remote.console.level=3,\
   name=,\
   org.osgi.framework.bootdelegation=javax.*,\
   org.osgi.service.http.port=9001,\

@@ -7,7 +7,8 @@
 -runstorage: generated/inaeticsdemo
 
 -runproperties: host=127.0.0.1,\
-  inaetics.attrs_univ=solution-1;application-1;module-1;module-2,\
+  inaetics.scopes.solution=solution-1,\
+  inaetics.scopes.modules=module-1:application-1;module-2:application-1;module-3:application-2,\
   org.osgi.framework.bootdelegation=javax.*,\
   org.osgi.service.http.port=9002,\
   org.amdatu.remote.discovery.etcd.connecturl=http://127.0.0.1:2379,\
