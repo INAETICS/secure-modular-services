@@ -7,17 +7,17 @@
 -runstorage: generated/inaticsmodule3
 
 -runproperties: host=127.0.0.1,\
-  inaetics.module.name=module-3,\
-  inaetics.application.name=application-2,\
+  inaetics.module.name=module-4,\
+  inaetics.application.name=application-3,\
   inaetics.solution.name=solution-1,\
   inaetics.params.storagefolder=,\
-  inaetics.params.policy.filename=policy-module-3,\
+  inaetics.params.policy.filename=policy-module-4,\
   inaetics.params.publickey.filename=publickey,\
   amdatu.remote.logging.level=3,\
   amdatu.remote.console.level=3,\
   name=,\
   org.osgi.framework.bootdelegation=javax.*,\
-  org.osgi.service.http.port=9003,\
+  org.osgi.service.http.port=9004,\
   org.amdatu.remote.discovery.etcd.connecturl=http://127.0.0.1:2379,\
   org.amdatu.remote.discovery.etcd.rootpath=/discovery2
 

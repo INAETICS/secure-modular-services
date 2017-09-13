@@ -119,10 +119,7 @@ public class KeyPolicyAttributeBasedEncryption{
 		Element m=gpswabe.dec(pub,  prv, cph);
 		if (m!=null) {
 			plt = AESCoder.decrypt(m.toBytes(), aesBuf);
-			//Common.spitFile(decfile, plt);
 			return plt;
-		} else {
-			System.exit(0);
 		}
         return null;
 	}

@@ -5,6 +5,7 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pbc.curve.PBCTypeACurveGenerator;
 import nl.sudohenk.kpabe.Example;
+import nl.sudohenk.kpabe.exceptions.UnsatisfiableException;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -500,7 +501,7 @@ public class gpswabe {
 	}
 
 	
-	public static Element dec(gpswabePub pub, gpswabePrv prv, gpswabeCph cph){
+	public static Element dec(gpswabePub pub, gpswabePrv prv, gpswabeCph cph) throws UnsatisfiableException{
 		Element Ys;
 		Element m;
 		Pairing pairing=pub.p;
@@ -508,8 +509,7 @@ public class gpswabe {
 		Ys=pairing.getGT().newElement();
 		checkSatisfy(prv.p, cph, pub);
 		if(!prv.p.satisfiable){
-		    logger.error("Cannot decrypt.");
-			return null;
+		    throw new UnsatisfiableException();
 		}
 		pickSatisfyMinLeaves(prv.p);
 		decFlatten(Ys, prv.p, cph, pub);

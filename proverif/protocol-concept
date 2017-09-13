@@ -1,0 +1,30 @@
+Definitions:
+
+R = Resolver
+M1 = Module 1
+M2 = Module 2
+
+==========================================
+Execution of the schema:
+==========================================
+Setup of a Solution by the Resolver (assuming secure setup and over secure channels):
+
+KP-ABE :> ATTR_UNIV = {"solution-1", "application-1", "module-1", "module-2"}
+KP-ABE :> setup(ATTR_UNIV) = (PK, Msk)
+KP-ABE :> For i in {1, 2}:
+KP-ABE :> 		policy = ("solution-1" AND ("application-1" OR "module-{i}"))
+KP-ABE :> 		SKpolicy{i} = keygen(PK, Msk, policy)
+
+new A;	(identities)
+new B;
+
+R -> M1 : (A, PK, ("solution-1", "application-1", "module-1"), SKpolicy1)
+R -> M2 : (B, PK, ("solution-1", "application-1", "module-2"), SKpolicy2)
+
+==========================================
+After this; Modules start communication over insecure channel c.
+
+M1 : in(A, PK, ATTRS, SKpolicy);
+M1 : new D; (Discovery information about a certain service it provides)
+M1 : C = abencrypt(PK, ATTRS, D) in 
+	M1 -> c : (A, C)

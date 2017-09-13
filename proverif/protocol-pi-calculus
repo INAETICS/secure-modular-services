@@ -1,0 +1,60 @@
+(* INAETICS KP-ABE *)
+
+(**************************************************************************
+   Research project involving the integration of Key 
+   Policy Attribute Based Encryption into the existing 
+   INAETICS modular service architecture.
+ **************************************************************************
+   Project reference: https://github.com/INAETICS/secure-modular-services
+ **************************************************************************)
+
+(* Private channels for the start of modules by the resolver *)
+private free secureChannelModule1, secureChannelModule2.
+
+(* Logging options *)
+(* 
+param verboseClauses = explained.
+param traceDisplay = long.
+*)
+
+(* A public channel *)
+free c.
+
+(* Crypto definitions *)
+fun abencrypt/3. (* Attribute Based encryption *)
+fun pk/1.      (* Extracts public key from a master secret key *)
+fun attrset/1.      (* Extracts attributes (KP-ABE) from the public key: attrset(pk(Msk)) *)
+fun attrpolicy/1.      (* Extracts decryption key from a master secret key: attrpolicy(Msk)*)
+
+(* The cryptographic destructors *)
+reduc abdecrypt(abencrypt(pk(y), x, attrset(pk(y))), attrpolicy(y)) = x.
+
+(**************************************************************************
+ * Attacker Queries                                                       *
+ **************************************************************************)
+
+(* secrecy Master secret ABE*)
+query attacker: Msk.
+query attacker: policy.
+query attacker: d.
+
+(* The module 1 entity *)
+
+let module1 =
+	in(secureChannelModule1, (pubkey, attrs, policy));
+	new d; (* Discovery information*)
+	let x = abencrypt(pubkey, attrs, d) in
+		out(c, x).
+
+(* The resolver entity *)
+let resolver =
+    new Msk; (* Master Secret ABE *)
+    let pubkey = pk(Msk) in
+    	let policy = attrpolicy(Msk) in
+    		let attrs = attrset(pubkey) in
+    			out(secureChannelModule1, (pubkey, attrs, policy)).
+
+
+(* Execute the process: entities in parallel *)
+process
+    !resolver | !module1
