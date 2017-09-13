@@ -30,3 +30,7 @@ By default the ABE encryption is enabled. If you want to debug/view the setup wi
 * Open `org.amdatu.remote.discovery.etcd.Activator` and change the `extends AbstractAttributeBasedEncryptionActivator` to `extends AbstractNoEncryptionActivator`. This disables the encryption of the discovery information stored in ETCD.
 * Open `org.amdatu.remote.discovery.AbstractHttpEndpointDiscovery` and change `private volatile SecureHttpEndpointDiscoveryServlet<T> m_servlet;` to `private volatile HttpEndpointDiscoveryServlet m_servlet;`. In the same class find `m_servlet = new SecureHttpEndpointDiscoveryServlet<T>(this, m_configuration);` and change it to `m_servlet = new HttpEndpointDiscoveryServlet(this);`. This disables the encryption of the endpoint descriptors (XML).
 * Rebuild project and run the same demo again. This time you can see in ETCD that all the information is in plaintext.
+
+## Important notes
+
+**This is an Experimental project. Do not use this in production.**
