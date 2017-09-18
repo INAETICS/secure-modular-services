@@ -26,5 +26,7 @@ After this; Modules start communication over insecure channel c.
 
 M1 : in(A, PK, ATTRS, SKpolicy);
 M1 : new D; (Discovery information about a certain service it provides)
-M1 : C = abencrypt(PK, ATTRS, D) in 
-	M1 -> c : (A, C)
+M1 : d = abencrypt(PK, ATTRS, "discovery info") in 
+	M1 -> c : (d, context)
+
+Now services can be used if the modules find the dsicovery information.

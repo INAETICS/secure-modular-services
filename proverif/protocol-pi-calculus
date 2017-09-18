@@ -9,7 +9,7 @@
  **************************************************************************)
 
 (* Private channels for the start of modules by the resolver *)
-private free secureChannelModule1, secureChannelModule2.
+private free secureChannelModule1, secureChannelModule2, Finished.
 
 (* Logging options *)
 (* 
@@ -35,25 +35,57 @@ reduc abdecrypt(abencrypt(pk(y), x, attrset(pk(y))), attrpolicy(y)) = x.
 
 (* secrecy Master secret ABE*)
 query attacker: Msk.
-query attacker: policy.
-query attacker: d.
+query attacker: policy1.
+query attacker: d1.
+query attacker: context1.
 
-(* The module 1 entity *)
+(* TODO: Query attacker Msk (need to publish pk?))
+
+(* The module entity *)
 
 let module1 =
-	in(secureChannelModule1, (pubkey, attrs, policy));
-	new d; (* Discovery information*)
-	let x = abencrypt(pubkey, attrs, d) in
-		out(c, x).
+  (* Discovery information/endpoint *) 
+	in(secureChannelModule1, (pubkey, attrs, policy1));
+
+	new d1; (* Discovery information/endpoint *) 
+  new context1; (* Discovery context *)
+
+
+  (* Replication between discovery broadcast and service usage, in parallel. *) 
+  !
+
+  (* Service broadcast. *) 
+	let x = abencrypt(pubkey, attrs, (d1, context1)) in
+		out(c, x) 
+
+  |
+
+  (* Service discovery of another module and usage provided by this module. *) 
+  in(c, y); let (d, context) = abdecrypt(y, policy1) in
+    new returnAddr; (* Identity to get back on *)
+    new serviceReq; (* service request *)
+    out(c, (d, returnAddr, serviceReq));
+    (* Finalize service call (e.g. use the info) *)
+    in(c, z); let (=returnAddr, =serviceReq, serviceRes) = z in
+      new FinishedServiceCall; out(Finished, FinishedServiceCall)
+    (* FLAG *)
+
+  |
+
+  (* Respond on service request by other module. *) 
+  in(c, w); let (=d1, ModReturnAddr, ModServiceReq) = w in
+    (* use the service provided by another module *)
+    new ModServiceRes; (* service response *)
+    out(c, (ModReturnAddr, ModServiceReq, ModServiceRes)).
+
 
 (* The resolver entity *)
 let resolver =
     new Msk; (* Master Secret ABE *)
     let pubkey = pk(Msk) in
-    	let policy = attrpolicy(Msk) in
-    		let attrs = attrset(pubkey) in
-    			out(secureChannelModule1, (pubkey, attrs, policy)).
-
+      let attrs = attrset(pubkey) in
+        let policy1 = attrpolicy(Msk) in
+    			out(secureChannelModule1, (pubkey, attrs, policy1)).
 
 (* Execute the process: entities in parallel *)
 process
